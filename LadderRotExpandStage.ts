@@ -166,4 +166,16 @@ class LRENode {
     startUpdating(cb : Function) {
         this.state.startUpdating(cb)
     }
+
+    getNext(dir : number, cb : Function) : LRENode {
+        var curr : LRENode = this.prev
+        if (dir == 1) {
+            curr = this.next
+        }
+        if (curr != null) {
+            return curr
+        }
+        cb()
+        return this 
+    }
 }
