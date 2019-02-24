@@ -42,14 +42,14 @@ const drawLRENode : Function = (context : CanvasRenderingContext2D, i : number, 
     context.save()
     context.translate(w / 2, gap * (i + 1))
     for (var j = 0; j < lines; j++) {
-        const sc : number = divideScale(sc1, j, lines)
-        y += sc * size
+        const sc : number = divideScale(sc2, j, lines)
+        y += sc * yGap
         for (var k = 0; k < 2; k++) {
             context.save()
             context.translate(0, y * (1 - 2 * k))
             for (var e = 0; e < 2; e++) {
                 context.save()
-                context.rotate(Math.PI/2 * (1 - 2 * e))
+                context.rotate(Math.PI/2 * (1 - 2 * e) * sc1)
                 context.beginPath()
                 context.moveTo(0, 0)
                 context.lineTo(0, -size / 2)
@@ -63,7 +63,7 @@ const drawLRENode : Function = (context : CanvasRenderingContext2D, i : number, 
 }
 
 class LadderRotExpandStage {
-    canvas : HTMLCanvasElement
+    canvas : HTMLCanvasElement = document.createElement('canvas')
     context : CanvasRenderingContext2D
     renderer : Renderer = new Renderer()
 
@@ -102,7 +102,7 @@ class State {
     dir : number = 0
 
     update(cb : Function) {
-        this.scale += updateValue(this.scale, 1, lines)
+        this.scale += updateValue(this.scale, this.dir, 1, lines)
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir
             this.dir = 0
