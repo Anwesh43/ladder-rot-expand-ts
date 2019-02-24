@@ -96,7 +96,7 @@ class State {
     scale : number = 0
     prevScale : number = 0
     dir : number = 0
-    
+
     update(cb : Function) {
         this.scale += updateValue(this.scale, 1, lines)
         if (Math.abs(this.scale - this.prevScale) > 1) {
@@ -111,6 +111,26 @@ class State {
         if (this.dir == 0) {
             this.dir = 1 - 2 * this.prevScale
             cb()
+        }
+    }
+}
+
+class Animator {
+
+    animated : boolean = false
+    interval : number
+
+    start(cb : Function) {
+        if (!this.animated) {
+            this.animated = true
+            this.interval = setInterval(cb, 50)
+        }
+    }
+
+    stop() {
+        if (this.animated) {
+            this.animated = false
+            clearInterval(this.interval)
         }
     }
 }
