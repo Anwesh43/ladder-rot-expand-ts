@@ -203,3 +203,25 @@ class LadderRotExpand {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    lre : LadderRotExpand = new LadderRotExpand()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.lre.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.lre.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.lre.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
